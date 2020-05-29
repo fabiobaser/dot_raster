@@ -4,7 +4,7 @@ const canvasSketch = require("canvas-sketch")
 const {
   renderPaths,
   createPath,
-  pathsToPolylines
+  pathsToPolylines,
 } = require("canvas-sketch-util/penplot")
 const { clipPolylinesToBox } = require("canvas-sketch-util/geometry")
 const Random = require("canvas-sketch-util/random")
@@ -20,7 +20,7 @@ const settings = {
   orientation: "portrait",
   pixelsPerInch: 300,
   scaleToView: true,
-  units: "cm"
+  units: "cm",
 }
 
 const TWO_PI = Math.PI * 2
@@ -56,35 +56,21 @@ const sketch = (props) => {
         })
       )
 
-      if (s > 1 - 0.15) {
+      if (s > 0.2) {
         paths.push(
           createPath((ctx) => {
             ctx.arc(x, y, (1 - l) * 0.06, 0, TWO_PI)
           })
         )
+      }
 
+      if (s > 0.7) {
         paths.push(
           createPath((ctx) => {
-            ctx.arc(x, y, (1 - l) * 0.02, 0, TWO_PI)
+            ctx.arc(x, y, (1 - l) * 0.04, 0, TWO_PI)
           })
         )
       }
-
-      // if (s > 0.6) {
-      //   paths.push(
-      //     createPath((ctx) => {
-      //       ctx.arc(x, y, (1 - l) * 0.09, 0, TWO_PI)
-      //     })
-      //   )
-      // }
-
-      // if (s > 0.4) {
-      //   paths.push(
-      //     createPath((ctx) => {
-      //       ctx.arc(x, y, (1 - l) * 0.04, 0, TWO_PI)
-      //     })
-      //   )
-      // }
     })
 
   let lines = pathsToPolylines(paths, { units })
@@ -99,7 +85,7 @@ const sketch = (props) => {
       lineJoin: "round",
       lineCap: "round",
       lineWidth: 0.08,
-      optimize: false
+      optimize: false,
     })
 }
 
