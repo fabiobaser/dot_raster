@@ -3,7 +3,7 @@
 const canvasSketch = require("canvas-sketch")
 
 const settings = {
-  dimensions: "A4"
+  dimensions: "A4",
 }
 
 const sketch = ({ context, width, height }) => {
@@ -15,7 +15,7 @@ const sketch = ({ context, width, height }) => {
   return ({ context, width, height }) => {
     context.drawImage(img, 0, 0)
 
-    const chunkSize = 10
+    const chunkSize = 5
     const chunks = []
     for (let x = 0; x < width; x += chunkSize) {
       for (let y = 0; y < height; y += chunkSize) {

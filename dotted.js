@@ -38,45 +38,39 @@ const sketch = (props) => {
       })
     )
 
+  let circleCount = 0
+
   RENDER_CIRCLES &&
-    chunks.slice(0, 20000).forEach((chunk) => {
+    chunks.slice(0, 1000000).forEach((chunk) => {
       let [x, y, l] = chunk
       x = x / 29 + 0.4
       y = y / 30 + 0.75
 
       const s = 1 - l
 
-      console.log(s)
-
-      //if (s < 0.35) return
+      const radius = s * 0.048
 
       paths.push(
         createPath((ctx) => {
-          ctx.arc(x, y, s * 0.14, 0, TWO_PI)
+          ctx.arc(x, y, radius, 0, TWO_PI)
         })
       )
-
-      if (s > 0.2) {
-        paths.push(
-          createPath((ctx) => {
-            ctx.arc(x, y, (1 - l) * 0.06, 0, TWO_PI)
-          })
-        )
-      }
+      circleCount++
 
       if (s > 0.7) {
         paths.push(
           createPath((ctx) => {
-            ctx.arc(x, y, (1 - l) * 0.04, 0, TWO_PI)
+            ctx.arc(x, y, s * 0.01, 0, TWO_PI)
           })
         )
+        circleCount++
       }
     })
 
   let lines = pathsToPolylines(paths, { units })
-  console.log("%cNumber of Polylines: ", "color: orange", lines.length)
+  console.log("%cNumber of Circles: ", "color: orange", circleCount)
 
-  const box = [0.9, 0.92, width - 1.1, height - 1.15]
+  const box = [1, 1, width - 1, height - 1]
   lines = clipPolylinesToBox(lines, box)
 
   return (props) =>
