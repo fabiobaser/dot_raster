@@ -13,7 +13,9 @@ const chunks = require("./chunks.js")
 const RENDER_CIRCLES = true
 const RENDER_BOX = false
 
-console.log("Random Seed:", Random.getSeed())
+let circleCount = 0
+const lineWidth = 0.08
+const TWO_PI = Math.PI * 2
 
 const settings = {
   dimensions: "A4",
@@ -23,22 +25,23 @@ const settings = {
   units: "cm",
 }
 
-const TWO_PI = Math.PI * 2
-
 const sketch = (props) => {
   const { width, height, units } = props
-  console.log(width, height)
+  console.log(
+    "%cDimensions: ",
+    "color: orange",
+    `${width}${units}`,
+    `${height}${units}`
+  )
   const paths = []
-  console.log(chunks.length)
+  const bbox = [1, 1, width - 1, height - 1]
 
   RENDER_BOX &&
     paths.push(
       createPath((ctx) => {
-        ctx.rect(0.5, 0.5, width - 1, height - 1)
+        ctx.rect(1, 1, width - 2, height - 2)
       })
     )
-
-  let circleCount = 0
 
   RENDER_CIRCLES &&
     chunks.slice(0, 1000000).forEach((chunk) => {
@@ -70,15 +73,14 @@ const sketch = (props) => {
   let lines = pathsToPolylines(paths, { units })
   console.log("%cNumber of Circles: ", "color: orange", circleCount)
 
-  const box = [1, 1, width - 1, height - 1]
-  lines = clipPolylinesToBox(lines, box)
+  lines = clipPolylinesToBox(lines, bbox)
 
   return (props) =>
     renderPaths(lines, {
       ...props,
       lineJoin: "round",
       lineCap: "round",
-      lineWidth: 0.08,
+      lineWidth,
       optimize: false,
     })
 }
